@@ -3,6 +3,15 @@
  / adding facebook and twitter buttons in login page.
  /
  -->
+<%  def get_login_url
+			client = OAuth2::Client.new( $tweetbook_settings['office365']['key'],
+                                  $tweetbook_settings['office365']['secret'],
+                                  :site => 'https://login.microsoftonline.com',
+                                  :authorize_url => '/common/oauth2/v2.0/authorize',
+                                  :token_url => '/common/oauth2/v2.0/token')
+
+      client.auth_code.authorize_url(:redirect_uri => authorize_url, :scope => $office_scope.join(' '))
+		end %>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -29,7 +38,7 @@ var twitter_Btn = '', facebook_Btn = '', github_Btn = '';
 <% end %>
 
 	<% if office_keys_present %>
-	var office365_Btn = '<%= link_to image_tag("Office-icon.png", :plugin => "redmine_tweetbook"), "/auth/office365" %>';
+	var office365_Btn = '<%= link_to image_tag("Office-icon.png", :plugin => "redmine_tweetbook"), get_login_url %>';
 	<% end %>
 
 <% if twitter_keys_present || facebook_keys_present || github_keys_present || office_keys_present %>

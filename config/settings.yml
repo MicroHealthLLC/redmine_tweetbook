@@ -14,5 +14,5 @@ github:
   secret: f3ae293ebb59c7288589fc8a4ca0c8e41b09ed3c   # Client Secret
 
 office365:
-  key: d00a1864-39a6-49bc-b63b-ffd0d955eec9                          # Client ID
-  secret: AB350C23629B2B742E45D54FF7CB03DD9FBE9146    # Client Secret
+  key: d00a1864-39a6-49bc-b63b-ffd0d955eec9                         # Client ID
+  secret: 'cDNgaivd6s3AbfBgpghUXmA'    # Client Secret
