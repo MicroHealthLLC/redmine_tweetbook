@@ -51,7 +51,7 @@ module RedmineTweetbook
             if user_address.user.active?
               successful_authentication(user_address.user)
             else
-              account_pending
+              account_pending user_address.user
             end
           end	
         rescue AuthSourceException => e
@@ -100,7 +100,7 @@ module RedmineTweetbook
             if user_address.user.active?
               successful_authentication(user_address.user)
             else
-              account_pending
+              account_pending(user_address.user)
             end
           end
         end
