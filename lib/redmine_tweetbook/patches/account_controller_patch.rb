@@ -32,18 +32,18 @@ module RedmineTweetbook
 
 
             case Setting.self_registration
-            when '1'
-              register_by_email_activation(user) do
-                onthefly_creation_failed(user)
-              end
-            when '3'
-              register_automatically(user) do
-                onthefly_creation_failed(user)
-              end
-            else
-              register_manually_by_administrator(user) do
-                onthefly_creation_failed(user)
-              end
+              when '1'
+                register_by_email_activation(user) do
+                  onthefly_creation_failed(user)
+                end
+              when '3'
+                register_automatically(user) do
+                  onthefly_creation_failed(user)
+                end
+              else
+                register_manually_by_administrator(user) do
+                  onthefly_creation_failed(user)
+                end
             end
             tweet_book.update_attribute :user_id, user.id
           else
@@ -51,7 +51,7 @@ module RedmineTweetbook
             if user_address.user.active?
               successful_authentication(user_address.user)
             else
-              account_pending user_address.user
+              handle_inactive_user user_address.user
             end
           end	
         rescue AuthSourceException => e
@@ -100,7 +100,7 @@ module RedmineTweetbook
             if user_address.user.active?
               successful_authentication(user_address.user)
             else
-              account_pending(user_address.user)
+              handle_inactive_user(user_address.user)
             end
           end
         end
