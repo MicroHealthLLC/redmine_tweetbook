@@ -21,9 +21,9 @@ class TweetBook < ActiveRecord::Base
 		create! do |tweet_book|
 			tweet_book.provider  = 'office365'
 			tweet_book.uid       = jwt['tid']
-			tweet_book.name      = jwt['name']
-			tweet_book.nickname  = jwt['name']
-			tweet_book.email     = jwt['preferred_username']
+			tweet_book.name      = jwt['given_name']
+			tweet_book.nickname  = jwt['given_name']
+			tweet_book.email     = jwt['unique_name']
 			tweet_book.image     = ''
 		end
 	end
