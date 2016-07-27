@@ -14,6 +14,7 @@ module RedmineTweetbook
           tweet_book = TweetBook.find_by_provider_and_uid(auth_hash['provider'], auth_hash['uid']) || TweetBook.create_with_auth_hash(auth_hash)
 
           user_address = EmailAddress.where(address: tweet_book.email).first_or_initialize
+          user_address.is_default = true
           if user_address.new_record?
             # Self-registration off
             redirect_to(home_url) && return unless Setting.self_registration?
@@ -22,14 +23,19 @@ module RedmineTweetbook
             user = User.new
 
             user.firstname, user.lastname = tweet_book.name.split(' ') unless tweet_book.name.nil?
+            if user.firstname.blank?
+              user.firstname = user_address.address
+            end
+
+            if user.lastname.blank?
+              user.lastname = user.firstname
+            end
+
             user.random_password
             user.register
 
-
-            user_address.is_default = true
             user.email_address = user_address
             user.login = user_address.address if user.login.blank?
-
 
             case Setting.self_registration
               when '1'
@@ -67,6 +73,7 @@ module RedmineTweetbook
           tweet_book = TweetBook.find_by_provider_and_uid('office365', jwt['tid']) || TweetBook.create_with_jwt_hash(jwt)
 
           user_address = EmailAddress.where(address: tweet_book.email).first_or_initialize
+          user_address.is_default = true
           if user_address.new_record?
             # Self-registration off
             redirect_to(home_url) && return unless Setting.self_registration?
@@ -77,7 +84,14 @@ module RedmineTweetbook
             user.random_password
             user.register
 
-            user_address.is_default = true
+            if user.firstname.blank?
+              user.firstname = user_address.address
+            end
+
+            if user.lastname.blank?
+              user.lastname = user.firstname
+            end
+
             user.email_address = user_address
             user.login = user_address.address if user.login.blank?
 
