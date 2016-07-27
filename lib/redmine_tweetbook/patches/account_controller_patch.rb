@@ -60,9 +60,10 @@ module RedmineTweetbook
         end
 
         def office_authenticate
-          token = get_token_from_code params[:code]
-          azure_token = token.token
-          jwt = get_email_from_id_token token.token
+          office = Office365.new(params[:code], authorize_url)
+          token = office.access_token
+          jwt = get_email_from_id_token token.params['id_token']
+
           tweet_book = TweetBook.find_by_provider_and_uid('office365', jwt['tid']) || TweetBook.create_with_jwt_hash(jwt)
 
           user_address = EmailAddress.where(address: tweet_book.email).first_or_initialize
@@ -106,18 +107,6 @@ module RedmineTweetbook
         end
 
         private
-
-        def get_token_from_code(auth_code)
-          client = OAuth2::Client.new($tweetbook_settings['office365']['key'],
-                                      $tweetbook_settings['office365']['secret'],
-                                      :site => 'https://login.microsoftonline.com',
-                                      :authorize_url => '/common/oauth2/v2.0/authorize',
-                                      :token_url => '/common/oauth2/v2.0/token')
-
-          client.auth_code.get_token(auth_code,
-                                     :redirect_uri => 'https://plan.microhealthllc.com/authorize',
-                                     :scope => $office_scope.join(' '))
-        end
 
         def get_email_from_id_token(id_token)
 

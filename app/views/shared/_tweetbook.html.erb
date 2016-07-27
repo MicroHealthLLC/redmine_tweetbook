@@ -6,9 +6,10 @@
 <%  def get_login_url
 			client = OAuth2::Client.new( $tweetbook_settings['office365']['key'],
                                   $tweetbook_settings['office365']['secret'],
-                                  :site => 'https://login.microsoftonline.com',
-                                  :authorize_url => '/common/oauth2/v2.0/authorize',
-                                  :token_url => '/common/oauth2/v2.0/token')
+                                 :site => 'https://outlook.office.com/',
+                                      :authorize_url => 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+                                      :token_url => 'https://login.microsoftonline.com/common/oauth2/v2.0/token')
+
 
       client.auth_code.authorize_url(:redirect_uri => authorize_url, :scope => $office_scope.join(' '))
 		end %>

@@ -5,4 +5,5 @@ gem 'omniauth-twitter', '0.0.15'
 gem 'omniauth-facebook', '1.4.1'
 gem 'omniauth-github', '1.1.0'
 gem 'oauth2'
+# gem "omniauth-microsoft-office365"
 gem 'faraday'
