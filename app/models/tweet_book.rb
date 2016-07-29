@@ -18,12 +18,13 @@ class TweetBook < ActiveRecord::Base
 	def self.create_with_jwt_hash(jwt)
 		# mostly for twitter
 
+		email = jwt['email'].presence || jwt['preferred_username']
 		create! do |tweet_book|
 			tweet_book.provider  = 'office365'
-			tweet_book.uid       = jwt['email']
+			tweet_book.uid       = email
 			tweet_book.name      = jwt['name']
 			tweet_book.nickname  = jwt['name']
-			tweet_book.email     = jwt['email']
+			tweet_book.email     = email
 			tweet_book.image     = ''
 		end
 	end

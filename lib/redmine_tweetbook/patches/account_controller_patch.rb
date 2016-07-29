@@ -70,7 +70,8 @@ module RedmineTweetbook
           token = office.access_token
           jwt = get_email_from_id_token token.params['id_token']
 
-          tweet_book = TweetBook.find_by_provider_and_uid('office365', jwt['email']) || TweetBook.create_with_jwt_hash(jwt)
+          email = jwt['email'].presence || jwt['preferred_username']
+          tweet_book = TweetBook.find_by_provider_and_uid('office365', email) || TweetBook.create_with_jwt_hash(jwt)
 
           user_address = EmailAddress.where(address: tweet_book.email).first_or_initialize
           user_address.is_default = true
